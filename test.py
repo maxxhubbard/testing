@@ -1,6 +1,6 @@
 from seleniumbase import SB
 import time
-
+import sys
 
 with SB(uc=True, test=True) as sb:
     url = "https://kick.com/browse"
@@ -16,3 +16,4 @@ with SB(uc=True, test=True) as sb:
         if sb.is_element_present('button:contains("Accept")'):
             sb.uc_click('button:contains("Accept")', reconnect_time=4)
         sb.sleep(5)
+        sys.exit(0)
