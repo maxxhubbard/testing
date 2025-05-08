@@ -9,7 +9,7 @@ with SB(uc=True, test=True) as sb:
     sb.sleep(2)
     sb.uc_gui_handle_captcha()
     start_time = time.time()
-    duration = 100 * 60
+    duration = 120 * 60
     while time.time() - start_time < duration:
         if sb.is_element_present('button:contains("I am 18+")'):
             sb.uc_click('button:contains("I am 18+")', reconnect_time=4)
