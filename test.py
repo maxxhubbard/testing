@@ -124,13 +124,11 @@ with SB(uc=True, test=True) as sb:
     if not testtw() and not testkick():
         channel = os.getenv("CHANNEL")
         url = f'https://www.youtube.com/@{channel}/videos'
-        sb.uc_open_with_reconnect(url, reconnect_time="breakpoint")
+        sb.uc_open_with_reconnect(url, reconnect_time=4)
         sb.sleep(2)
-        sb.uc_gui_click_captcha()
-        sb.sleep(2)
-        sb.uc_gui_handle_captcha()
-        sb.sleep(2)
-        sb.uc_click("div#thumbnail", 4.1)
+        if sb.is_element_present('button:contains("Accept")'):
+            sb.uc_click('button:contains("Accept")', reconnect_time=4)
+        sb.uc_click("img#thumbnail", 4.1)
         sb.sleep(2)
         sb.save_screenshot("ssasa.png", folder='./latest_logs')
         sb.sleep(5)
