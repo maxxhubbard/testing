@@ -128,7 +128,9 @@ with SB(uc=True, test=True) as sb:
         sb.sleep(2)
         if sb.is_element_present('button:contains("Accept")'):
             sb.uc_click('button:contains("Accept")', reconnect_time=4)
-        sb.uc_click("img#thumbnail", 4.1)
+        sb.uc_click("div#contents.style-scope.ytd-rich-grid-renderer", 4.1)
+        sb.sleep(2)
+        sb.uc_click("div#thumbnail.style-scope.ytd-rich-grid-renderer", 4.1)
         sb.sleep(2)
         sb.save_screenshot("ssasa.png", folder='./latest_logs')
         sb.sleep(5)
