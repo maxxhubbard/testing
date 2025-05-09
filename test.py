@@ -121,6 +121,14 @@ with SB(uc=True, test=True) as sb:
                 sb.sleep(120)
             else:
                 break
-
-
+    if not testtw() and not testkick():
+        channel = os.getenv("CHANNEL")
+        url = f'https://www.youtube.com/@{channel}/videos'
+        sb.uc_open_with_reconnect(url, 5)
+        sb.uc_gui_click_captcha()
+        sb.sleep(2)
+        sb.uc_gui_handle_captcha()
+        sb.sleep(2)
+        sb.uc_click('#contents > ytd-rich-item-renderer:nth-child(1)', reconnect_time=4)
+        sb.sleep(12)
             
