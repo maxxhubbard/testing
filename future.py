@@ -1,0 +1,200 @@
+from seleniumbase import SB
+import time
+import requests
+import sys
+import requests
+import os
+import random
+import subprocess
+
+
+def stop_warp():
+    try:
+        # Check WARP status
+        status_result = subprocess.run(["warp-cli", "status"], capture_output=True, text=True)
+        print("WARP Status:")
+        print(status_result.stdout)
+        # If WARP is connected, disconnect it
+        if "Connected" in status_result.stdout:
+            print("Stopping WARP...")
+            disconnect_result = subprocess.run(["sudo", "warp-cli", "disconnect"], check=True)
+            print("WARP stopped successfully.")
+        else:
+            print("WARP is not currently connected.")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while stopping WARP: {e}")
+
+
+def start_warp():
+    try:
+        # Check WARP status
+        status_result = subprocess.run(["warp-cli", "status"], capture_output=True, text=True)
+        print("WARP Status:")
+        print(status_result.stdout)
+        # Start WARP if not already connected
+        if "Connected" not in status_result.stdout:
+            print("Starting WARP...")
+            subprocess.run(["sudo", "warp-cli", "--accept-tos", "connect"], check=True)
+            print("WARP started successfully.")
+        else:
+            print("WARP is already connected.")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while managing WARP: {e}")
+
+
+def testtw():
+    # Retrieve environment variables
+    channel = os.getenv("CHANNEL")
+    authorization = os.getenv("AUTHORIZATION")
+    client_id = os.getenv("TCLIENTID")
+
+    if not channel or not authorization or not client_id:
+        print("Missing required environment variables: CHANNEL, AUTHORIZATION, or TCLIENTID.")
+        return False
+
+    # Set up the API request
+    url = f"https://api.twitch.tv/helix/streams?user_login={channel}"
+    headers = {
+        "Authorization": f"Bearer {authorization}",
+        "Client-Id": client_id
+    }
+
+    try:
+        # Send the GET request to the Twitch API
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+
+        # Check if the response contains "live"
+        if "live" in response.text:
+            return True
+        else:
+            return False
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error occurred: {e}")
+        return False
+
+
+def testkick():
+    token_url = "https://id.kick.com/oauth/token"
+    client_id = os.getenv("CLIENTID")  # Replace with your client ID
+    client_secret = os.getenv("CLIENTSECRET")  # Replace with your client secret
+    body = {
+        "grant_type": "client_credentials",
+        "client_id": client_id,
+        "client_secret": client_secret
+    }
+
+    try:
+        token_response = requests.post(token_url, data=body)
+        token_response.raise_for_status()
+        access_token = token_response.json().get("access_token")
+        # print(f"Access Token: {access_token}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error retrieving token: {client_id} {client_secret} {e}")
+        return False
+
+    channel_slug = os.getenv("CHANNEL")  # Replace this with the channel's slug
+    url = f"https://api.kick.com/public/v1/channels?slug={channel_slug}"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json().get("data", [])
+        for channel in data:
+            slug = channel.get("slug")
+            is_live = channel.get("stream", {}).get("is_live")
+            if is_live is True:
+                return True
+    except requests.exceptions.RequestException as e:
+        print(f"Error retrieving channel data: {e}")
+        return False
+
+    return False
+
+
+with SB(uc=True, test=True) as sb:
+    start_time = time.time()
+    duration = 340 * 60
+    while time.time() - start_time < duration:
+        if testkick():
+            channel = os.getenv("CHANNEL")
+            url = f'https://kick.com/{channel}'
+            sb.uc_open_with_reconnect(url, 5)
+            sb.uc_gui_click_captcha()
+            sb.sleep(2)
+            sb.uc_gui_handle_captcha()
+            while testkick():
+                if sb.is_element_present('button:contains("I am 18+")'):
+                    sb.uc_click('button:contains("I am 18+")', reconnect_time=4)
+                if sb.is_element_present('button:contains("Accept")'):
+                    sb.uc_click('button:contains("Accept")', reconnect_time=4)
+                if testkick():
+                    sb.sleep(120)
+                else:
+                    break
+        if testtw():
+            channel = os.getenv("CHANNEL")
+            url = f'https://www.twitch.tv/{channel}'
+            sb.uc_open_with_reconnect(url, 5)
+            sb.uc_gui_click_captcha()
+            sb.sleep(2)
+            sb.uc_gui_handle_captcha()
+            while testtw():
+                if sb.is_element_present('button:contains("Start Watching")'):
+                    sb.uc_click('button:contains("Start Watching")', reconnect_time=4)
+                if sb.is_element_present('button:contains("Accept")'):
+                    sb.uc_click('button:contains("Accept")', reconnect_time=4)
+                if testtw():
+                    sb.sleep(120)
+                else:
+                    break
+        if not testtw() and not testkick():
+            start_warp()
+            channel = os.getenv("CHANNEL")
+            url = f'https://www.youtube.com/@{channel}/videos'
+            sb.uc_open_with_reconnect(url, reconnect_time=4)
+            sb.sleep(2)
+            if sb.is_element_present('button:contains("Accept")'):
+                sb.uc_click('button:contains("Accept")', reconnect_time=4)
+            screen_rect = sb.get_screen_rect()
+            screen_width = screen_rect["width"]
+            screen_height = screen_rect["height"]
+            window_rect = sb.get_window_rect()
+            window_width = window_rect["width"]
+            window_height = window_rect["height"]
+            x_start = int(window_width * 0.25)  # 75% of window width
+            x_end = window_width - 1  # Maximum width inside the window
+            y_start = int(window_height * 0.7)  # 75% of window height
+            y_end = screen_height - 1  # Maximum height inside the window
+            random_x = random.randint(x_start, x_end)
+            random_y = random.randint(y_start, y_end)
+            sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
+            sb.sleep(2)
+            urlnow = sb.get_current_url()
+            kkk = 0
+            while url == urlnow:
+                window_rect = sb.get_window_rect()
+                window_width = window_rect["width"]
+                window_height = window_rect["height"]
+                x_start = int(window_width * 0.75)  # 75% of window width
+                x_end = window_width - 1  # Maximum width inside the window
+                y_start = int(window_height * 0.7)  # 75% of window height
+                y_end = screen_height - 1  # Maximum height inside the window
+                random_x = random.randint(x_start, x_end)
+                random_y = random.randint(y_start, y_end)
+                sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
+                sb.sleep(3)
+                urlnow = sb.get_current_url()
+                kkk += 1
+                if kkk >= 5:
+                    break
+            while not testtw() and not testkick():
+                sb.sleep(120)
+            stop_warp()
+        sb.sleep(60)
+            
