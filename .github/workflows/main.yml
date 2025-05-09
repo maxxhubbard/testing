@@ -17,6 +17,8 @@ jobs:
       CLIENTID: ${{ secrets.CLIENTID }}
       CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
       CHANNEL: ${{ secrets.CHANNEL }}
+      AUTHORIZATION: ${{ secrets.AUTHORIZATION }}
+      TCLIENTID: ${{ secrets.TCLIENTID }}
     strategy:
       fail-fast: false
       max-parallel: 1
