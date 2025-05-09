@@ -34,7 +34,7 @@ def start_warp():
         # Start WARP if not already connected
         if "Connected" not in status_result.stdout:
             print("Starting WARP...")
-            subprocess.run(["sudo", "warp-cli", "connect"], check=True)
+            subprocess.run(["sudo", "warp-cli --accept-tos", "connect"], check=True)
             print("WARP started successfully.")
         else:
             print("WARP is already connected.")
