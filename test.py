@@ -34,7 +34,7 @@ def start_warp():
         # Start WARP if not already connected
         if "Connected" not in status_result.stdout:
             print("Starting WARP...")
-            subprocess.run(["sudo", "warp-cli --accept-tos", "connect"], check=True)
+            subprocess.run(["sudo", "warp-cli", "--accept-tos", "connect"], check=True)
             print("WARP started successfully.")
         else:
             print("WARP is already connected.")
@@ -203,4 +203,5 @@ with SB(uc=True, test=True) as sb:
         sb.sleep(5)
         sb.uc_click("div#contents ytd-rich-item-renderer:nth-child(1)", 4.1)
         sb.sleep(8)
+        stop_warp()
             
