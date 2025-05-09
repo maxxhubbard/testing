@@ -94,7 +94,7 @@ jobs:
         sudo apt install -y cloudflare-warp
 
         # Register WARP (replace with your WARP credentials if needed)
-        warp-cli register
+        warp-cli registration
     - name: Run python test.py --debug
       run: |
         python test.py --debug --chrome --xvfb --screenshot
