@@ -3,6 +3,7 @@ import time
 import requests
 import sys
 import requests
+import os
 
 
 def testkick():
@@ -49,7 +50,8 @@ def testkick():
 
 with SB(uc=True, test=True) as sb:
     if testkick():
-        url = "https://kick.com/browse"
+        channel = os.getenv("CHANNEL")
+        url = f'https://kick.com/{channel}'
         sb.uc_open_with_reconnect(url, 5)
         sb.uc_gui_click_captcha()
         sb.sleep(2)
