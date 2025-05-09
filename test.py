@@ -130,6 +130,10 @@ with SB(uc=True, test=True) as sb:
         sb.sleep(2)
         sb.uc_gui_handle_captcha()
         sb.sleep(2)
-        sb.uc_click("ytd-rich-item-renderer.style-scope", 4.1)
-        sb.sleep(12)
+        sb.uc_click("div#thumbnail", 4.1)
+        sb.sleep(2)
+        sb.save_screenshot("ssasa.png", folder='./latest_logs')
+        sb.sleep(5)
+        sb.uc_click("div#contents", 4.1)
+        sb.sleep(8)
             
