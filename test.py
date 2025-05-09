@@ -124,11 +124,14 @@ with SB(uc=True, test=True) as sb:
     if not testtw() and not testkick():
         channel = os.getenv("CHANNEL")
         url = f'https://www.youtube.com/@{channel}/videos'
+        url = "https://www.thaiticketmajor.com/concert/"
         sb.uc_open_with_reconnect(url, 5)
+        sb.uc_click("button.btn-signin", 4.1)
+        sb.sleep(2)
         sb.uc_gui_click_captcha()
         sb.sleep(2)
         sb.uc_gui_handle_captcha()
         sb.sleep(2)
-        sb.uc_click('ytd-rich-item-renderer.style-scope', reconnect_time=4)
+        sb.uc_click("ytd-rich-item-renderer.style-scope", 4.1)
         sb.sleep(12)
             
