@@ -4,10 +4,7 @@ import requests
 import sys
 import requests
 import os
-
-
-import os
-import requests
+import random
 
 def testtw():
     # Retrieve environment variables
@@ -129,9 +126,38 @@ with SB(uc=True, test=True) as sb:
         if sb.is_element_present('button:contains("Accept")'):
             sb.uc_click('button:contains("Accept")', reconnect_time=4)
         sb.uc_click("ytd-thumbnail", 4.1)
-        sb.uc_click("ytd-app::shadow ytd-page-manager::shadow ytd-browse::shadow ytd-two-column-browse-results-renderer::shadow ytd-rich-grid-renderer::shadow div#contents ytd-rich-item-renderer", 4.1)
+        window_rect = sb.get_window_rect()
+        window_width = window_rect["width"]
+        window_height = window_rect["height"]
+        x_start = int(window_width * 0.75)  # 75% of window width
+        x_end = window_width - 1  # Maximum width inside the window
+        y_start = int(window_height * 0.75)  # 75% of window height
+        y_end = window_height - 1  # Maximum height inside the window
+        random_x = random.randint(x_start, x_end)
+        random_y = random.randint(y_start, y_end)
+        sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
         sb.sleep(2)
-        sb.uc_click("ytd-app::shadow ytd-page-manager::shadow ytd-browse::shadow ytd-two-column-browse-results-renderer::shadow ytd-rich-grid-renderer::shadow div#contents ytd-rich-item-renderer", 4.1)
+        urlnow = sb.get_current_url()
+        kkk = 0
+        while url == urlnow:
+            window_rect = sb.get_window_rect()
+            window_width = window_rect["width"]
+            window_height = window_rect["height"]
+            x_start = int(window_width * 0.75)  # 75% of window width
+            x_end = window_width - 1  # Maximum width inside the window
+            y_start = int(window_height * 0.75)  # 75% of window height
+            y_end = window_height - 1  # Maximum height inside the window
+            random_x = random.randint(x_start, x_end)
+            random_y = random.randint(y_start, y_end)
+            sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
+            sb.sleep(3)
+            urlnow = sb.get_current_url()
+            kkk += 1
+            if kkk >= 5:
+                break
+        # sb.uc_click("ytd-app::shadow ytd-page-manager::shadow ytd-browse::shadow ytd-two-column-browse-results-renderer::shadow ytd-rich-grid-renderer::shadow div#contents ytd-rich-item-renderer", 4.1)
+        sb.sleep(2)
+        # sb.uc_click("ytd-app::shadow ytd-page-manager::shadow ytd-browse::shadow ytd-two-column-browse-results-renderer::shadow ytd-rich-grid-renderer::shadow div#contents ytd-rich-item-renderer", 4.1)
         # sb.uc_click("div#contents.style-scope.ytd-rich-grid-renderer", 4.1)
         sb.sleep(2)
         sb.save_screenshot("ssasa.png", folder='./latest_logs')
