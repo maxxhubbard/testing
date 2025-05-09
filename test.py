@@ -123,6 +123,7 @@ with SB(uc=True, test=True) as sb:
         url = f'https://www.youtube.com/@{channel}/videos'
         sb.uc_open_with_reconnect(url, reconnect_time=4)
         sb.sleep(2)
+        sb.maximize_window()
         if sb.is_element_present('button:contains("Accept")'):
             sb.uc_click('button:contains("Accept")', reconnect_time=4)
         sb.uc_click("ytd-thumbnail", 4.1)
