@@ -6,6 +6,42 @@ import requests
 import os
 
 
+import os
+import requests
+
+def testtw():
+    # Retrieve environment variables
+    channel = os.getenv("CHANNEL")
+    authorization = os.getenv("AUTHORIZATION")
+    client_id = os.getenv("TCLIENTID")
+
+    if not channel or not authorization or not client_id:
+        print("Missing required environment variables: CHANNEL, AUTHORIZATION, or TCLIENTID.")
+        return False
+
+    # Set up the API request
+    url = f"https://api.twitch.tv/helix/streams?user_login={channel}"
+    headers = {
+        "Authorization": f"Bearer {authorization}",
+        "Client-Id": client_id
+    }
+
+    try:
+        # Send the GET request to the Twitch API
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+
+        # Check if the response contains "live"
+        if "live" in response.text:
+            return True
+        else:
+            return False
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error occurred: {e}")
+        return False
+
+
 def testkick():
     token_url = "https://id.kick.com/oauth/token"
     client_id = os.getenv("CLIENTID")  # Replace with your client ID
@@ -25,7 +61,7 @@ def testkick():
         print(f"Error retrieving token: {client_id} {client_secret} {e}")
         return False
 
-    channel_slug = "xqc"  # Replace this with the channel's slug
+    channel_slug = os.getenv("CHANNEL")  # Replace this with the channel's slug
     url = f"https://api.kick.com/public/v1/channels?slug={channel_slug}"
     headers = {
         "Authorization": f"Bearer {access_token}",
@@ -63,5 +99,25 @@ with SB(uc=True, test=True) as sb:
                 sb.uc_click('button:contains("I am 18+")', reconnect_time=4)
             if sb.is_element_present('button:contains("Accept")'):
                 sb.uc_click('button:contains("Accept")', reconnect_time=4)
-            sb.sleep(5)
+            if testkick():
+                sb.sleep(120)
+            else:
+                break
+    if testtw():
+        channel = os.getenv("CHANNEL")
+        url = f'https://www.twitch.tv/{channel}'
+        sb.uc_open_with_reconnect(url, 5)
+        sb.uc_gui_click_captcha()
+        sb.sleep(2)
+        sb.uc_gui_handle_captcha()
+        start_time = time.time()
+        duration = 120 * 60
+        while time.time() - start_time < duration:
+            if sb.is_element_present('button:contains("Start Watching")'):
+                sb.uc_click('button:contains("Start Watching")', reconnect_time=4)
+            if sb.is_element_present('button:contains("Accept")'):
+                sb.uc_click('button:contains("Accept")', reconnect_time=4)
             sys.exit(0)
+
+
+            
