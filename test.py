@@ -5,6 +5,42 @@ import sys
 import requests
 import os
 import random
+import subprocess
+
+
+def stop_warp():
+    try:
+        # Check WARP status
+        status_result = subprocess.run(["warp-cli", "status"], capture_output=True, text=True)
+        print("WARP Status:")
+        print(status_result.stdout)
+        # If WARP is connected, disconnect it
+        if "Connected" in status_result.stdout:
+            print("Stopping WARP...")
+            disconnect_result = subprocess.run(["sudo", "warp-cli", "disconnect"], check=True)
+            print("WARP stopped successfully.")
+        else:
+            print("WARP is not currently connected.")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while stopping WARP: {e}")
+
+
+def start_warp():
+    try:
+        # Check WARP status
+        status_result = subprocess.run(["warp-cli", "status"], capture_output=True, text=True)
+        print("WARP Status:")
+        print(status_result.stdout)
+        # Start WARP if not already connected
+        if "Connected" not in status_result.stdout:
+            print("Starting WARP...")
+            subprocess.run(["sudo", "warp-cli", "connect"], check=True)
+            print("WARP started successfully.")
+        else:
+            print("WARP is already connected.")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while managing WARP: {e}")
+
 
 def testtw():
     # Retrieve environment variables
@@ -119,6 +155,7 @@ with SB(uc=True, test=True) as sb:
             else:
                 break
     if not testtw() and not testkick():
+        start_warp()
         channel = os.getenv("CHANNEL")
         url = f'https://www.youtube.com/@{channel}/videos'
         sb.uc_open_with_reconnect(url, reconnect_time=4)
