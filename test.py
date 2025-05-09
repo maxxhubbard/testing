@@ -119,7 +119,7 @@ def testkick():
 
 with SB(uc=True, test=True) as sb:
     start_time = time.time()
-    duration = 340 * 60
+    duration = 60 * 60
     while time.time() - start_time < duration:
         if testkick():
             channel = os.getenv("CHANNEL")
