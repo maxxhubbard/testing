@@ -22,7 +22,7 @@ def testkick():
         access_token = token_response.json().get("access_token")
         print(f"Access Token: {access_token}")
     except requests.exceptions.RequestException as e:
-        print(f"Error retrieving token: {e}")
+        print(f"Error retrieving token: {token_response} {e}")
         return False
 
     channel_slug = "xqc"  # Replace this with the channel's slug
