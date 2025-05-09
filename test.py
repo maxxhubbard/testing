@@ -124,7 +124,7 @@ with SB(uc=True, test=True) as sb:
     if not testtw() and not testkick():
         channel = os.getenv("CHANNEL")
         url = f'https://www.youtube.com/@{channel}/videos'
-        sb.uc_open_with_reconnect(url, 5)
+        sb.uc_open_with_reconnect(url, reconnect_time="breakpoint")
         sb.sleep(2)
         sb.uc_gui_click_captcha()
         sb.sleep(2)
