@@ -81,6 +81,20 @@ jobs:
       run: |
         python -c "from seleniumbase.core import detect_b_ver; print(detect_b_ver.get_binary_location('google-chrome'))"
         python -c "from seleniumbase import undetected; print(undetected.find_chrome_executable())"
+    - name: Install Cloudflare WARP
+      run: |
+        # Add Cloudflare's repository and import its GPG key
+        sudo apt update
+        sudo apt install -y curl
+        curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+
+        # Install the WARP client
+        sudo apt update
+        sudo apt install -y cloudflare-warp
+
+        # Register WARP (replace with your WARP credentials if needed)
+        warp-cli register
     - name: Run python test.py --debug
       run: |
         python test.py --debug --chrome --xvfb --screenshot
