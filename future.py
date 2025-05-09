@@ -128,15 +128,27 @@ with SB(uc=True, test=True) as sb:
             sb.uc_gui_click_captcha()
             sb.sleep(2)
             sb.uc_gui_handle_captcha()
+            sb.sleep(5)
+            if sb.is_element_present('button:contains("Accept")'):
+                sb.uc_click('button:contains("Accept")', reconnect_time=4)
+            if sb.is_element_present('button:contains("I am 18+")'):
+                sb.uc_click('button:contains("I am 18+")', reconnect_time=4)
+            driver2 = sb.get_new_driver(undetectable=True)
+            driver2.uc_open_with_reconnect(url, 5)
+            driver2.uc_gui_click_captcha()
+            sb.sleep(2)
+            driver2.uc_gui_handle_captcha()
+            sb.sleep(15)
+            if driver2.is_element_present('button:contains("Accept")'):
+                driver2.uc_click('button:contains("Accept")', reconnect_time=4)
+            if driver2.is_element_present('button:contains("I am 18+")'):
+                driver2.uc_click('button:contains("I am 18+")', reconnect_time=4)
             while testkick():
-                if sb.is_element_present('button:contains("I am 18+")'):
-                    sb.uc_click('button:contains("I am 18+")', reconnect_time=4)
-                if sb.is_element_present('button:contains("Accept")'):
-                    sb.uc_click('button:contains("Accept")', reconnect_time=4)
                 if testkick():
                     sb.sleep(120)
                 else:
                     break
+            sb.quit_extra_driver()
         if testtw():
             channel = os.getenv("CHANNEL")
             url = f'https://www.twitch.tv/{channel}'
@@ -144,15 +156,27 @@ with SB(uc=True, test=True) as sb:
             sb.uc_gui_click_captcha()
             sb.sleep(2)
             sb.uc_gui_handle_captcha()
+            if sb.is_element_present('button:contains("Start Watching")'):
+                sb.uc_click('button:contains("Start Watching")', reconnect_time=4)
+            if sb.is_element_present('button:contains("Accept")'):
+                sb.uc_click('button:contains("Accept")', reconnect_time=4)
+            driver2 = sb.get_new_driver(undetectable=True)
+            driver2.uc_open_with_reconnect(url, 5)
+            driver2.uc_gui_click_captcha()
+            sb.sleep(2)
+            driver2.uc_gui_handle_captcha()
+            sb.sleep(15)
+            if driver2.is_element_present('button:contains("Start Watching")'):
+                driver2.uc_click('button:contains("Start Watching")', reconnect_time=4)
+            if driver2.is_element_present('button:contains("Accept")'):
+                driver2.uc_click('button:contains("Accept")', reconnect_time=4)
+            sb.sleep(5)
             while testtw():
-                if sb.is_element_present('button:contains("Start Watching")'):
-                    sb.uc_click('button:contains("Start Watching")', reconnect_time=4)
-                if sb.is_element_present('button:contains("Accept")'):
-                    sb.uc_click('button:contains("Accept")', reconnect_time=4)
                 if testtw():
                     sb.sleep(120)
                 else:
                     break
+            sb.quit_extra_driver()
         if not testtw() and not testkick():
             start_warp()
             channel = os.getenv("CHANNEL")
