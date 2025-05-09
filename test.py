@@ -138,7 +138,7 @@ with SB(uc=True, test=True) as sb:
             driver2.uc_gui_click_captcha()
             sb.sleep(2)
             driver2.uc_gui_handle_captcha()
-            sb.sleep(5)
+            sb.sleep(15)
             if driver2.is_element_present('button:contains("Accept")'):
                 driver2.uc_click('button:contains("Accept")', reconnect_time=4)
             if driver2.is_element_present('button:contains("I am 18+")'):
@@ -165,13 +165,12 @@ with SB(uc=True, test=True) as sb:
             driver2.uc_gui_click_captcha()
             sb.sleep(2)
             driver2.uc_gui_handle_captcha()
-            sb.sleep(5)
+            sb.sleep(15)
             if driver2.is_element_present('button:contains("Start Watching")'):
                 driver2.uc_click('button:contains("Start Watching")', reconnect_time=4)
             if driver2.is_element_present('button:contains("Accept")'):
                 driver2.uc_click('button:contains("Accept")', reconnect_time=4)
-            sb.sleep(15)
-            sys.exit(0)
+            sb.sleep(5)
             while testtw():
                 if testtw():
                     sb.sleep(120)
