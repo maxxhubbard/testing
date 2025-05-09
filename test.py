@@ -123,17 +123,18 @@ with SB(uc=True, test=True) as sb:
         url = f'https://www.youtube.com/@{channel}/videos'
         sb.uc_open_with_reconnect(url, reconnect_time=4)
         sb.sleep(2)
-        sb.maximize_window()
         if sb.is_element_present('button:contains("Accept")'):
             sb.uc_click('button:contains("Accept")', reconnect_time=4)
-        sb.uc_click("ytd-thumbnail", 4.1)
+        screen_rect = sb.get_screen_rect()
+        screen_width = screen_rect["width"]
+        screen_height = screen_rect["height"]
         window_rect = sb.get_window_rect()
         window_width = window_rect["width"]
         window_height = window_rect["height"]
-        x_start = int(window_width * 0.75)  # 75% of window width
+        x_start = int(window_width * 0.25)  # 75% of window width
         x_end = window_width - 1  # Maximum width inside the window
-        y_start = int(window_height * 0.75)  # 75% of window height
-        y_end = window_height - 1  # Maximum height inside the window
+        y_start = int(window_height * 0.7)  # 75% of window height
+        y_end = screen_height - 1  # Maximum height inside the window
         random_x = random.randint(x_start, x_end)
         random_y = random.randint(y_start, y_end)
         sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
@@ -146,8 +147,8 @@ with SB(uc=True, test=True) as sb:
             window_height = window_rect["height"]
             x_start = int(window_width * 0.75)  # 75% of window width
             x_end = window_width - 1  # Maximum width inside the window
-            y_start = int(window_height * 0.75)  # 75% of window height
-            y_end = window_height - 1  # Maximum height inside the window
+            y_start = int(window_height * 0.7)  # 75% of window height
+            y_end = screen_height - 1  # Maximum height inside the window
             random_x = random.randint(x_start, x_end)
             random_y = random.randint(y_start, y_end)
             sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
