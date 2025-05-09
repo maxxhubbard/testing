@@ -135,6 +135,6 @@ with SB(uc=True, test=True) as sb:
         sb.sleep(2)
         sb.save_screenshot("ssasa.png", folder='./latest_logs')
         sb.sleep(5)
-        sb.uc_click("div#contents ytd-rich-item-renderer ytd-thumbnail", 4.1)
+        sb.uc_click("div#contents ytd-rich-item-renderer:nth-child(1)", 4.1)
         sb.sleep(8)
             
