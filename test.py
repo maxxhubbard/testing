@@ -11,7 +11,7 @@ import requests
 
 def testtw():
     # Retrieve environment variables
-    channel = os.getenv("CHANNEL")
+    channel = "enardo"# os.getenv("CHANNEL")
     authorization = os.getenv("AUTHORIZATION")
     client_id = os.getenv("TCLIENTID")
 
