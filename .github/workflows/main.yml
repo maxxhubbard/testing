@@ -14,9 +14,9 @@ jobs:
 
     env:
       PY_COLORS: "1"
-      CLIENT_ID: ${{ secrets.CLIENTID }}
-      CLIENT_SECRET: ${{ secrets.CLIENTSECRET }}
-      CHANNEL_SLUG: ${{ secrets.CHANNEL }}
+      CLIENTID: ${{ secrets.CLIENTID }}
+      CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
+      CHANNEL: ${{ secrets.CHANNEL }}
     strategy:
       fail-fast: false
       max-parallel: 1
