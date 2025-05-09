@@ -129,6 +129,6 @@ with SB(uc=True, test=True) as sb:
         sb.sleep(2)
         sb.uc_gui_handle_captcha()
         sb.sleep(2)
-        sb.uc_click('#contents > ytd-rich-item-renderer:nth-child(1)', reconnect_time=4)
+        sb.uc_click('ytd-rich-item-renderer.style-scope', reconnect_time=4)
         sb.sleep(12)
             
