@@ -1,4 +1,4 @@
-name: Workflow1
+name: Workflow3
 on:
   schedule:
     - cron: "6 * * * *"
