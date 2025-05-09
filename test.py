@@ -170,6 +170,7 @@ with SB(uc=True, test=True) as sb:
                 driver2.uc_click('button:contains("Start Watching")', reconnect_time=4)
             if driver2.is_element_present('button:contains("Accept")'):
                 driver2.uc_click('button:contains("Accept")', reconnect_time=4)
+            sb.sleep(15)
             sys.exit(0)
             while testtw():
                 if testtw():
