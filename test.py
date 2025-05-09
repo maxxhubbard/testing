@@ -117,7 +117,10 @@ with SB(uc=True, test=True) as sb:
                 sb.uc_click('button:contains("Start Watching")', reconnect_time=4)
             if sb.is_element_present('button:contains("Accept")'):
                 sb.uc_click('button:contains("Accept")', reconnect_time=4)
-            sys.exit(0)
+            if testtw():
+                sb.sleep(120)
+            else:
+                break
 
 
             
