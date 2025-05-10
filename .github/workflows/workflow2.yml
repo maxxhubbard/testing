@@ -81,6 +81,13 @@ jobs:
       run: |
         python -c "from seleniumbase.core import detect_b_ver; print(detect_b_ver.get_binary_location('google-chrome'))"
         python -c "from seleniumbase import undetected; print(undetected.find_chrome_executable())"
+    - name: Download and Install Psiphon
+      run: |
+        # Download the official installer
+        wget https://raw.githubusercontent.com/SpherionOS/PsiphonLinux/main/plinstaller2
+        
+        # Install Psiphon
+        sudo sh plinstaller2
     - name: Install Cloudflare WARP
       run: |
         # Add Cloudflare's repository and import its GPG key
