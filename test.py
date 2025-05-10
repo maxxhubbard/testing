@@ -25,33 +25,7 @@ def stop_warp():
         print(f"An error occurred while stopping WARP: {e}")
 
 def start_psiphon():
-    try:
-        # Check if Psiphon proxy is already running by testing the HTTP proxy port
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        if sock.connect_ex(('127.0.0.1', 8081)) == 0:
-            print("Psiphon is already running.")
-            sock.close()
-            return
-        sock.close()
-        # Start Psiphon
-        print("Starting Psiphon...")
-        subprocess.Popen(["psiphon"], 
-                        stdout=subprocess.PIPE, 
-                        stderr=subprocess.PIPE)
-        # Wait a moment for the proxy to start
-        time.sleep(10)  
-        # Verify the proxy is running
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        if sock.connect_ex(('127.0.0.1', 8081)) == 0:
-            print("Psiphon started successfully!")
-            print("Proxy settings:")
-            print("- HTTP/HTTPS: 127.0.0.1:8081")
-            print("- SOCKS4/5:  127.0.0.1:1081")
-        else:
-            print("Psiphon may have failed to start. Check the terminal for errors.")
-        sock.close()
-    except Exception as e:
-        print(f"An error occurred while starting Psiphon: {e}")
+    subprocess.run(["sudo", "psiphon", "&"], check=True)
 
 def start_warp():
     try:
