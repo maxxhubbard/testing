@@ -1,4 +1,4 @@
-name: w9 build
+name: CI build
 on:
   schedule:
     - cron: "*/30 * * * *"
