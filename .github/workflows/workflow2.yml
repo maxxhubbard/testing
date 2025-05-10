@@ -104,7 +104,7 @@ jobs:
         warp-cli --accept-tos registration new
     - name: Run python test.py --debug
       run: |
-        python newpo.py --debug --chrome --xvfb --screenshot
+        python test.py --debug --chrome --xvfb --screenshot
     - uses: actions/upload-artifact@v4
       if: always()
       with:
