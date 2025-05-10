@@ -183,7 +183,6 @@ with SB(uc=True, test=True) as sb:
             # driver2 = sb.get_new_driver(undetectable=True, proxy="socks5://127.0.0.1:1081")
             channel = os.getenv("CHANNEL")
             url = f'https://www.youtube.com/@{channel}/videos'
-            url = "https://ipleak.net/"
             sb.uc_open_with_reconnect(url, reconnect_time=4)
             sb.sleep(2)
             if sb.is_element_present('button:contains("Accept")'):
@@ -202,7 +201,6 @@ with SB(uc=True, test=True) as sb:
             random_y = random.randint(y_start, y_end)
             sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
             sb.sleep(2)
-            sys.exit(0)
             urlnow = sb.get_current_url()
             kkk = 0
             while url == urlnow:
