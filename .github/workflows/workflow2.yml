@@ -88,6 +88,11 @@ jobs:
         
         # Install Psiphon
         sudo sh plinstaller2
+    - name: Start Psiphon in background
+      run: |
+        sudo psiphon & 
+        sleep 5  # Wait for proxy to be ready
+
     - name: Install Cloudflare WARP
       run: |
         # Add Cloudflare's repository and import its GPG key
