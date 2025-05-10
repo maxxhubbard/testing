@@ -177,7 +177,7 @@ with SB(uc=True, test=True) as sb:
                 else:
                     break
             sb.quit_extra_driver()
-        if not testtw() and not testkick():
+        if not testtw() and not testkick() and time.time() - start_time < duration:
             start_warp()
             channel = os.getenv("CHANNEL")
             url = f'https://www.youtube.com/@{channel}/videos'
@@ -217,7 +217,7 @@ with SB(uc=True, test=True) as sb:
                 kkk += 1
                 if kkk >= 5:
                     break
-            while not testtw() and not testkick():
+            while not testtw() and not testkick() and time.time() - start_time < duration:
                 sb.sleep(120)
             stop_warp()
         sb.sleep(60)
