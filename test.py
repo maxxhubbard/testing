@@ -180,7 +180,9 @@ with SB(uc=True, test=True) as sb:
                     break
             sb.quit_extra_driver()
         if not testtw() and not testkick() and time.time() - start_time < duration:
+            start_psiphon()
             start_warp()
+            sb.sleep(15)
             driver2 = sb.get_new_driver(undetectable=True, proxy="socks5://127.0.0.1:1081")
             channel = os.getenv("CHANNEL")
             url = f'https://www.youtube.com/@{channel}/videos'
