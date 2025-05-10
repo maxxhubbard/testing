@@ -24,6 +24,8 @@ def stop_warp():
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while stopping WARP: {e}")
 
+def start_psiphon():
+    subprocess.run(["sudo", "psiphon"], check=True)
 
 def start_warp():
     try:
@@ -179,16 +181,17 @@ with SB(uc=True, test=True) as sb:
             sb.quit_extra_driver()
         if not testtw() and not testkick() and time.time() - start_time < duration:
             start_warp()
+            driver2 = sb.get_new_driver(undetectable=True, proxy="socks5://127.0.0.1:1081")
             channel = os.getenv("CHANNEL")
             url = f'https://www.youtube.com/@{channel}/videos'
-            sb.uc_open_with_reconnect(url, reconnect_time=4)
-            sb.sleep(2)
-            if sb.is_element_present('button:contains("Accept")'):
-                sb.uc_click('button:contains("Accept")', reconnect_time=4)
+            driver2.uc_open_with_reconnect(url, reconnect_time=4)
+            driver2.sleep(2)
+            if driver2.is_element_present('button:contains("Accept")'):
+                driver2.uc_click('button:contains("Accept")', reconnect_time=4)
             screen_rect = sb.get_screen_rect()
             screen_width = screen_rect["width"]
             screen_height = screen_rect["height"]
-            window_rect = sb.get_window_rect()
+            window_rect = driver2.get_window_rect()
             window_width = window_rect["width"]
             window_height = window_rect["height"]
             x_start = int(window_width * 0.25)  # 75% of window width
@@ -197,8 +200,9 @@ with SB(uc=True, test=True) as sb:
             y_end = screen_height - 1  # Maximum height inside the window
             random_x = random.randint(x_start, x_end)
             random_y = random.randint(y_start, y_end)
-            sb.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
+            driver2.uc_gui_click_x_y(random_x, random_y, timeframe=0.25)
             sb.sleep(2)
+            sys.exit(0)
             urlnow = sb.get_current_url()
             kkk = 0
             while url == urlnow:
