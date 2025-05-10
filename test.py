@@ -221,6 +221,6 @@ with SB(uc=True, test=True) as sb:
                     break
             while not testtw() and not testkick() and time.time() - start_time < duration:
                 sb.sleep(120)
-            stop_warp()
+            # stop_warp()
         sb.sleep(60)
             
