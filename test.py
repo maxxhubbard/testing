@@ -183,6 +183,7 @@ with SB(uc=True, test=True) as sb:
             # driver2 = sb.get_new_driver(undetectable=True, proxy="socks5://127.0.0.1:1081")
             channel = os.getenv("CHANNEL")
             url = f'https://www.youtube.com/@{channel}/videos'
+            url = 'https://whatismyipaddress.com/'
             sb.uc_open_with_reconnect(url, reconnect_time=4)
             sb.sleep(2)
             if sb.is_element_present('button:contains("Accept")'):
